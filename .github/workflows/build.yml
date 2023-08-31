@@ -1,0 +1,36 @@
+name: build
+on:
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'warning'
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Java JDK
+        uses: actions/setup-java@v3.12.0
+        with:
+          distribution: 'microsoft'
+          java-version: '17'
+
+      - name: Run Gradle Build
+        continue-on-error: false
+        id: build
+        run: chmod +x ./gradlew && ./gradlew shadowJar
+
+      # 上传构建文件
+      - name: Capture build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: Artifacts
+          path: build/libs/
