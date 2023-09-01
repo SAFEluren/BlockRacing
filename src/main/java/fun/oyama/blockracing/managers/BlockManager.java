@@ -1,6 +1,6 @@
 package fun.oyama.blockracing.managers;
 
-import fun.oyama.blockracing.listeners.EventListener;
+import fun.oyama.blockracing.listeners.playerClickEvent;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,11 +19,11 @@ public class BlockManager {
     public static void init() {
         ArrayList<String> var = new ArrayList<>();
         Collections.addAll(var, easyBlocks);
-        if (EventListener.enableNormalBlock) Collections.addAll(var, normalBlocks);
-        if (EventListener.enableHardBlock) Collections.addAll(var, hardBlocks);
-        if (EventListener.enableDyedBlock) Collections.addAll(var, dyedBlocks);
-        if (EventListener.enableEndBlock) Collections.addAll(var, endBlocks);
-        if (EventListener.blockAmount > var.size()) {
+        if (playerClickEvent.enableNormalBlock) Collections.addAll(var, normalBlocks);
+        if (playerClickEvent.enableHardBlock) Collections.addAll(var, hardBlocks);
+        if (playerClickEvent.enableDyedBlock) Collections.addAll(var, dyedBlocks);
+        if (playerClickEvent.enableEndBlock) Collections.addAll(var, endBlocks);
+        if (playerClickEvent.blockAmount > var.size()) {
             blockAmountCheckout = false;
             maxBlockAmount = var.size();
             return;

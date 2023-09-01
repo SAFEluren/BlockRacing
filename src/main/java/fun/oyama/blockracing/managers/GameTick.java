@@ -9,6 +9,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import fun.oyama.blockracing.utils.ItemBuilder;
 
+import static fun.oyama.blockracing.utils.CountdownRestart.countdownRestart;
+
 public class GameTick extends BukkitRunnable {
     public static int redCompleteAmount;
     public static int blueCompleteAmount;
@@ -33,11 +35,13 @@ public class GameTick extends BukkitRunnable {
     private boolean checkWinner() {
         if (GameManager.blueCurrentBlocks.isEmpty()) {
             GameManager.setWinner("blue",false);
+            countdownRestart(30);
             return true;
         }
 
         if (GameManager.redCurrentBlocks.isEmpty()) {
             GameManager.setWinner("red",false);
+            countdownRestart(30);
             return true;
         }
         return false;

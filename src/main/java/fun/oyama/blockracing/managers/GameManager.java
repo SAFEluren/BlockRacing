@@ -1,6 +1,6 @@
 package fun.oyama.blockracing.managers;
 
-import fun.oyama.blockracing.listeners.EventListener;
+import fun.oyama.blockracing.listeners.playerClickEvent;
 import fun.oyama.blockracing.utils.Color;
 import fun.oyama.blockracing.utils.PotionEffectUtils;
 import org.bukkit.*;
@@ -14,6 +14,7 @@ import fun.oyama.blockracing.utils.ItemBuilder;
 
 import java.util.*;
 
+import static fun.oyama.blockracing.listeners.messageSendPlayerClickEvent.editAmountPlayer;
 import static org.bukkit.Bukkit.getPlayer;
 import static org.bukkit.Bukkit.getServer;
 
@@ -41,12 +42,12 @@ public class GameManager {
             player.setGameMode(GameMode.ADVENTURE);
             player.sendMessage(Color.format("&a欢迎来到方块竞速，按下[蹲下]+[副手]打开菜单"));
         } else {
-            if (EventListener.redTeamPlayerString.contains(player.getName())) {
+            if (playerClickEvent.redTeamPlayerString.contains(player.getName())) {
                 if (!redTeamPlayer.contains(player)) {
                     redTeamPlayer.add(player);
                     blueTeamPlayer.remove(player);
                 }
-            } else if (EventListener.blueTeamPlayerString.contains(player.getName())) {
+            } else if (playerClickEvent.blueTeamPlayerString.contains(player.getName())) {
                 if (!blueTeamPlayer.contains(player)) {
                     blueTeamPlayer.add(player);
                     redTeamPlayer.remove(player);
@@ -61,7 +62,7 @@ public class GameManager {
     // 游戏开始时的设置
     public static void gameStart() {
         gameStatus = true;
-        EventListener.editAmountPlayer.clear();
+        editAmountPlayer.clear();
         if (!extremeMode) setBlocks();
         else setExtremeBlocks();
 
@@ -86,10 +87,10 @@ public class GameManager {
 //            return;
 //        }
 
-        if (EventListener.blockAmount <= 20) locateCost = 2;
-        else if (EventListener.blockAmount <= 50) locateCost = 3;
-        else if (EventListener.blockAmount <= 100) locateCost = 5;
-        else if (EventListener.blockAmount <= 200) locateCost = 8;
+        if (playerClickEvent.blockAmount <= 20) locateCost = 2;
+        else if (playerClickEvent.blockAmount <= 50) locateCost = 3;
+        else if (playerClickEvent.blockAmount <= 100) locateCost = 5;
+        else if (playerClickEvent.blockAmount <= 200) locateCost = 8;
         else locateCost = 10;
         InventoryManager.setLocateItem();
 
@@ -104,7 +105,7 @@ public class GameManager {
 
         // 未选队玩家（旁观者）处理
         for (Player player : Bukkit.getOnlinePlayers()) {
-            if (!EventListener.prepareList.contains(player)) {
+            if (!playerClickEvent.prepareList.contains(player)) {
                 player.setGameMode(GameMode.SPECTATOR);
                 player.sendMessage(ChatColor.RED + "游戏已开始，您现在是旁观者！");
                 inGamePlayer.remove(player);
@@ -161,14 +162,14 @@ public class GameManager {
         for (Player p : redTeamPlayer) {
             if (!inGamePlayer.contains(p)) {
                 redTeamPlayer.remove(p.getPlayer());
-                EventListener.redTeamPlayerString.remove(Objects.requireNonNull(p.getPlayer()).getName());
+                playerClickEvent.redTeamPlayerString.remove(Objects.requireNonNull(p.getPlayer()).getName());
                 ScoreboardManager.red.removeEntry(p.getName());
             }
         }
         for (Player p : blueTeamPlayer) {
             if (!inGamePlayer.contains(p)) {
                 blueTeamPlayer.remove(p.getPlayer());
-                EventListener.blueTeamPlayerString.remove(Objects.requireNonNull(p.getPlayer()).getName());
+                playerClickEvent.blueTeamPlayerString.remove(Objects.requireNonNull(p.getPlayer()).getName());
                 ScoreboardManager.blue.removeEntry(p.getName());
             }
         }
@@ -182,14 +183,14 @@ public class GameManager {
     private static void setBlocks() {
         ArrayList<String> blocks_temp = new ArrayList<>();
         Collections.addAll(blocks_temp, BlockManager.blocks);
-        for (int i = 0; i < EventListener.blockAmount; i++) {
+        for (int i = 0; i < playerClickEvent.blockAmount; i++) {
             int a = r.nextInt(BlockManager.blocks.length - i);
             redTeamBlocks.add(blocks_temp.get(a));
             blocks_temp.remove(a);
         }
         blocks_temp.clear();
         Collections.addAll(blocks_temp, BlockManager.blocks);
-        for (int i = 0; i < EventListener.blockAmount; i++) {
+        for (int i = 0; i < playerClickEvent.blockAmount; i++) {
             int a = r.nextInt(BlockManager.blocks.length - i);
             blueTeamBlocks.add(blocks_temp.get(a));
             blocks_temp.remove(a);
@@ -219,7 +220,7 @@ public class GameManager {
     private static void setExtremeBlocks() {
         ArrayList<String> blocks_temp = new ArrayList<>();
         Collections.addAll(blocks_temp, BlockManager.blocks);
-        for (int i = 0; i < EventListener.blockAmount; i++) {
+        for (int i = 0; i < playerClickEvent.blockAmount; i++) {
             int a = r.nextInt(BlockManager.blocks.length - i);
             redTeamBlocks.add(blocks_temp.get(a));
             blueTeamBlocks.add(blocks_temp.get(a));

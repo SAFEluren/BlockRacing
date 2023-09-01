@@ -4,7 +4,7 @@ import com.destroystokyo.paper.profile.PlayerProfile;
 import fun.oyama.blockracing.commands.Locate;
 import fun.oyama.blockracing.commands.TP;
 import fun.oyama.blockracing.commands.debugCommands;
-import fun.oyama.blockracing.listeners.EventListener;
+import fun.oyama.blockracing.listeners.*;
 import fun.oyama.blockracing.managers.ConfigManager;
 import fun.oyama.blockracing.managers.InventoryManager;
 import fun.oyama.blockracing.managers.ScoreboardManager;
@@ -35,7 +35,11 @@ public class Main extends JavaPlugin {
 //        TitleManagerAPI api = (TitleManagerAPI) Bukkit.getServer().getPluginManager().getPlugin("TitleManager");
 
         // 注册事件监听器
-        Bukkit.getPluginManager().registerEvents(new EventListener(), this);
+        Bukkit.getPluginManager().registerEvents(new playerClickEvent(), this);
+        Bukkit.getPluginManager().registerEvents(new playerLoginPlayerClickEvent(), this);
+        Bukkit.getPluginManager().registerEvents(new playerQuitPlayerClickEvent(), this);
+        Bukkit.getPluginManager().registerEvents(new messageSendPlayerClickEvent(), this);
+        Bukkit.getPluginManager().registerEvents(new playerSwapPlayerClickEvent(), this);
 
         // 注册命令处理器
 

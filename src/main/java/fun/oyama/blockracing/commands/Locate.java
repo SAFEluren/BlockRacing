@@ -1,6 +1,6 @@
 package fun.oyama.blockracing.commands;
 
-import fun.oyama.blockracing.listeners.EventListener;
+import fun.oyama.blockracing.listeners.playerClickEvent;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -23,7 +23,7 @@ public class Locate implements CommandExecutor, TabCompleter {
         }
 
         // 检测是否拥有权限
-        if (EventListener.locateCommandPermission.contains((Player) sender)) {
+        if (playerClickEvent.locateCommandPermission.contains((Player) sender)) {
             ConsoleCommandHandler.sendLocateCommand((Player) sender, args[0] + " " + args[1]);
         } else sender.sendMessage(ChatColor.DARK_RED + "您没有该命令的使用权限！请在/cd中购买！");
         return true;

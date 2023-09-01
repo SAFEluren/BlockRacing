@@ -1,7 +1,7 @@
 package fun.oyama.blockracing.utils;
 
 import fun.oyama.blockracing.Main;
-import fun.oyama.blockracing.listeners.EventListener;
+import fun.oyama.blockracing.listeners.playerClickEvent;
 import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
@@ -52,7 +52,7 @@ public class ConsoleCommandHandler {
                     msg = msg.replace("] (", "] " + ChatColor.WHITE + "(");
                     msg = msg.replace(" blocks away", "个方块外");
                     player.sendMessage(msg);
-                    EventListener.locateCommandPermission.remove(player);
+                    playerClickEvent.locateCommandPermission.remove(player);
                 }
             }, 5);
         } catch (CommandException e) {

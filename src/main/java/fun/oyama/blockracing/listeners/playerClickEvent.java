@@ -1,6 +1,5 @@
 package fun.oyama.blockracing.listeners;
 
-import fun.oyama.blockracing.Main;
 import fun.oyama.blockracing.managers.BlockManager;
 import fun.oyama.blockracing.managers.GameManager;
 import fun.oyama.blockracing.managers.InventoryManager;
@@ -12,20 +11,18 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.*;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
-import static fun.oyama.blockracing.managers.GameManager.gameStatus;
-import static fun.oyama.blockracing.managers.InventoryManager.menu;
+import static fun.oyama.blockracing.listeners.messageSendPlayerClickEvent.editAmountPlayer;
 import static fun.oyama.blockracing.managers.InventoryManager.settings;
 import static org.bukkit.Bukkit.broadcast;
 import static org.bukkit.Bukkit.broadcastMessage;
 
 
-public class EventListener implements Listener {
+public class playerClickEvent implements Listener {
     public static ArrayList<Player> locateCommandPermission = new ArrayList<>();
     public static boolean enableNormalBlock = false;
     public static boolean enableHardBlock = false;
@@ -40,80 +37,11 @@ public class EventListener implements Listener {
     public static HashMap<String, Location> point3 = new HashMap<>();
     public static HashMap<Player, Boolean> randomTP = new HashMap<>();
     public static boolean canStart = false;
-    public static ArrayList<Player> editAmountPlayer = new ArrayList<>();
+
     Random r = new Random();
-    boolean flag = false;
+
     private boolean redIsRolled = false;
     private boolean blueIsRolled = false;
-
-    @EventHandler
-    public void onPlayerLogin(PlayerLoginEvent e) {
-        // 设置记分板
-        Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> ScoreboardManager.setPlayerScoreboard(e.getPlayer()), 40);
-        // 初始化
-        Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> GameManager.playerLogin(e.getPlayer()), 40);
-        // 在线列表添加玩家
-        GameManager.inGamePlayer.add(e.getPlayer());
-
-    }
-
-    @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent e) {
-        // 在线列表移除玩家
-        GameManager.inGamePlayer.remove(e.getPlayer());
-        prepareList.remove(e.getPlayer());
-        editAmountPlayer.remove(e.getPlayer());
-
-    }
-
-    @EventHandler
-    public void onPlayerSwap(PlayerSwapHandItemsEvent e) {
-        if (e.getPlayer().isSneaking()) {
-            if (!gameStatus) e.getPlayer().openInventory(settings);
-            else e.getPlayer().openInventory(menu);
-            e.setCancelled(true);
-        }
-    }
-
-    @EventHandler
-    public void onMessageSend(AsyncPlayerChatEvent e) {
-        if (gameStatus) return;
-        if (editAmountPlayer.contains(e.getPlayer())) {
-            if (e.getMessage().equals("quit")) {
-                e.getPlayer().sendMessage(ChatColor.GREEN + "成功退出输入模式！");
-                editAmountPlayer.remove(e.getPlayer());
-                e.setCancelled(true);
-                return;
-            }
-            try {
-                blockAmount = Integer.parseInt(e.getMessage());
-                flag = true;
-            } catch (Exception ex) {
-                e.getPlayer().sendMessage(ChatColor.RED + "请输入正确数字！如果您想退出输入模式，请发送quit");
-                flag = false;
-            } finally {
-                e.setCancelled(true);
-            }
-            if (flag) {
-                if (blockAmount < 10) {
-//                    Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> ConsoleCommandHandler.send("tellraw @a {\"color\": \"green\",\"text\": \"需要收集的方块数量更改为10\"}"), 1L);
-                    e.getPlayer().sendMessage(ChatColor.GREEN+ "目标方块数量最小为10，自动修改为10");
-                    blockAmount = 10;
-                } else {
-//                    Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> ConsoleCommandHandler.send("tellraw @a {\"color\": \"green\",\"text\": \"将需要收集的方块数量更改为" + blockAmount + "\"}"), 1L);
-                    Bukkit.broadcastMessage(ChatColor.GREEN+ "更改方块数量为 " + blockAmount);
-
-                }
-                editAmountPlayer.remove(e.getPlayer());
-                ScoreboardManager.update();
-            }
-        }
-    }
-
-    @EventHandler
-    public void onPlayerRespawn(PlayerRespawnEvent e) {
-        e.getPlayer().sendMessage(ChatColor.AQUA + "提示：如果出生点附近无法放置或破坏方块，是因为服务器带有出生点保护，离开出生点附近即可！");
-    }
 
     @EventHandler
     public void onClick(InventoryClickEvent e) {

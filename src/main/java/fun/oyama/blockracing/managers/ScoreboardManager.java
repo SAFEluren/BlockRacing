@@ -1,7 +1,7 @@
 package fun.oyama.blockracing.managers;
 
 import fun.oyama.blockracing.Main;
-import fun.oyama.blockracing.listeners.EventListener;
+import fun.oyama.blockracing.listeners.playerClickEvent;
 import fun.oyama.blockracing.utils.Color;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -55,8 +55,8 @@ public class ScoreboardManager {
         setSlot(6, ChatColor.GREEN + "Shift+F打开菜单");
         setSlot(5, "");
         setSlot(4, ChatColor.YELLOW + "当前模式：" + (GameManager.extremeMode ? "极限竞速模式" : "普通模式"));
-        setSlot(3, ChatColor.YELLOW + "方块数量：" + EventListener.blockAmount);
-        setSlot(2, ChatColor.YELLOW + "方块库：简单方块" + (EventListener.enableNormalBlock ? "+中等方块" : "") + (EventListener.enableHardBlock ? "+困难方块" : "") + (EventListener.enableDyedBlock ? "+染色方块" : "") + (EventListener.enableEndBlock ? "+末地方块" : ""));
+        setSlot(3, ChatColor.YELLOW + "方块数量：" + playerClickEvent.blockAmount);
+        setSlot(2, ChatColor.YELLOW + "方块库：简单方块" + (playerClickEvent.enableNormalBlock ? "+中等方块" : "") + (playerClickEvent.enableHardBlock ? "+困难方块" : "") + (playerClickEvent.enableDyedBlock ? "+染色方块" : "") + (playerClickEvent.enableEndBlock ? "+末地方块" : ""));
         setSlot(1, "");
     }
 
@@ -99,9 +99,9 @@ public class ScoreboardManager {
         }
 
         if (GameManager.extremeMode) setSlot(13, ChatColor.YELLOW + "当前游戏模式：极限竞速");
-        setSlot(12, "&c红队：&e" + redTeamScore + "积分" + "\u00a7b  (" + GameTick.redCompleteAmount + "/" + EventListener.blockAmount + ")");
+        setSlot(12, "&c红队：&e" + redTeamScore + "积分" + "\u00a7b  (" + GameTick.redCompleteAmount + "/" + playerClickEvent.blockAmount + ")");
         setSlot(7, "-------------------");
-        setSlot(6, "&9蓝队：&e" + blueTeamScore + "积分" + "\u00a7b  (" + GameTick.blueCompleteAmount + "/" + EventListener.blockAmount + ")");
+        setSlot(6, "&9蓝队：&e" + blueTeamScore + "积分" + "\u00a7b  (" + GameTick.blueCompleteAmount + "/" + playerClickEvent.blockAmount + ")");
         setSlot(1, "");
     }
 
