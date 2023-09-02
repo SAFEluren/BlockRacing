@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import static fun.oyama.blockracing.managers.GameManager.gameStatus;
 
 
-public class messageSendPlayerClickEvent implements Listener {
+public class messageSendPlayerEvent implements Listener {
     public static ArrayList<Player> editAmountPlayer = new ArrayList<>();
     boolean flag = false;
     @EventHandler

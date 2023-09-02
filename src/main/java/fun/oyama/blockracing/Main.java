@@ -36,10 +36,10 @@ public class Main extends JavaPlugin {
 
         // 注册事件监听器
         Bukkit.getPluginManager().registerEvents(new playerClickEvent(), this);
-        Bukkit.getPluginManager().registerEvents(new playerLoginPlayerClickEvent(), this);
-        Bukkit.getPluginManager().registerEvents(new playerQuitPlayerClickEvent(), this);
-        Bukkit.getPluginManager().registerEvents(new messageSendPlayerClickEvent(), this);
-        Bukkit.getPluginManager().registerEvents(new playerSwapPlayerClickEvent(), this);
+        Bukkit.getPluginManager().registerEvents(new playerLoginPlayerEvent(), this);
+        Bukkit.getPluginManager().registerEvents(new playerQuitPlayerEvent(), this);
+        Bukkit.getPluginManager().registerEvents(new messageSendPlayerEvent(), this);
+        Bukkit.getPluginManager().registerEvents(new playerSwapPlayerEvent(), this);
 
         // 注册命令处理器
 

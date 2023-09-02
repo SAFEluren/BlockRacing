@@ -8,7 +8,7 @@ import static fun.oyama.blockracing.managers.GameManager.gameStatus;
 import static fun.oyama.blockracing.managers.InventoryManager.menu;
 import static fun.oyama.blockracing.managers.InventoryManager.settings;
 
-public class playerSwapPlayerClickEvent implements Listener {
+public class playerSwapPlayerEvent implements Listener {
     @EventHandler
     public void onPlayerSwap(PlayerSwapHandItemsEvent e) {
         if (e.getPlayer().isSneaking()) {

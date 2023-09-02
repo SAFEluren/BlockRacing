@@ -14,7 +14,7 @@ import fun.oyama.blockracing.utils.ItemBuilder;
 
 import java.util.*;
 
-import static fun.oyama.blockracing.listeners.messageSendPlayerClickEvent.editAmountPlayer;
+import static fun.oyama.blockracing.listeners.messageSendPlayerEvent.editAmountPlayer;
 import static org.bukkit.Bukkit.getPlayer;
 import static org.bukkit.Bukkit.getServer;
 
@@ -272,16 +272,15 @@ public class GameManager {
         GameManager.gameStatus = false;
         GameManager.gameOver = true;
         ScoreboardManager.update();
-        if (termination = true ){
+        if (termination){
             Bukkit.broadcastMessage(ChatColor.RED+"游戏提前终止！管理员设置最终赢家为"+ GameManager.winnerTeamDisplayname);
         } else {
             Bukkit.broadcastMessage(ChatColor.GREEN+ "恭喜"+ winnerTeamDisplayname + "获胜!");
         }
 
         for (Player player : Bukkit.getOnlinePlayers()) {
-
             player.closeInventory();
-            player.getInventory().clear();
+//            player.getInventory().clear();
             player.setGameMode(GameMode.SPECTATOR);
             player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1.0F, 1.0F);
             player.teleport(new Location(Bukkit.getServer().getWorld("world"), 0, 80, 0));

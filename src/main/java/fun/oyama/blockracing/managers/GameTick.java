@@ -27,6 +27,7 @@ public class GameTick extends BukkitRunnable {
         }
 
         if (checkWinner()){
+            countdownRestart(15);
             cancel();
         }
     }
@@ -35,13 +36,11 @@ public class GameTick extends BukkitRunnable {
     private boolean checkWinner() {
         if (GameManager.blueCurrentBlocks.isEmpty()) {
             GameManager.setWinner("blue",false);
-            countdownRestart(30);
             return true;
         }
 
         if (GameManager.redCurrentBlocks.isEmpty()) {
             GameManager.setWinner("red",false);
-            countdownRestart(30);
             return true;
         }
         return false;

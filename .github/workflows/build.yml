@@ -8,7 +8,7 @@ on:
         default: 'warning'
   push:
     branches:
-      - master
+      - main
 
 jobs:
   build:

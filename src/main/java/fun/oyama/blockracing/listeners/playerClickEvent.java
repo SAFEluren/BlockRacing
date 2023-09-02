@@ -4,7 +4,6 @@ import fun.oyama.blockracing.managers.BlockManager;
 import fun.oyama.blockracing.managers.GameManager;
 import fun.oyama.blockracing.managers.InventoryManager;
 import fun.oyama.blockracing.managers.ScoreboardManager;
-import fun.oyama.blockracing.utils.ConsoleCommandHandler;
 import fun.oyama.blockracing.utils.ItemBuilder;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -16,7 +15,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
-import static fun.oyama.blockracing.listeners.messageSendPlayerClickEvent.editAmountPlayer;
+import static fun.oyama.blockracing.listeners.messageSendPlayerEvent.editAmountPlayer;
 import static fun.oyama.blockracing.managers.InventoryManager.settings;
 import static org.bukkit.Bukkit.broadcast;
 import static org.bukkit.Bukkit.broadcastMessage;
@@ -252,7 +251,7 @@ public class playerClickEvent implements Listener {
                     ScoreboardManager.redTeamScore = 0;
                     ScoreboardManager.update();
                 } else if (GameManager.redTeamPlayer.contains((Player) e.getWhoClicked()) & redIsRolled) {
-                    e.getWhoClicked().sendMessage(ChatColor.DARK_RED + "您的队伍已经使用过Roll了！");
+                    e.getWhoClicked().sendMessage(ChatColor.DARK_RED + "队伍已经刷新过方块了！");
                 }
                 if (GameManager.blueTeamPlayer.contains((Player) e.getWhoClicked()) & !blueIsRolled) {
                     for (int i = 0; i < 4; i++) {
@@ -267,12 +266,12 @@ public class playerClickEvent implements Listener {
                     ScoreboardManager.blueTeamScore = 0;
                     ScoreboardManager.update();
                 } else if (GameManager.blueTeamPlayer.contains((Player) e.getWhoClicked()) & blueIsRolled) {
-                    e.getWhoClicked().sendMessage(ChatColor.DARK_RED + "您的队伍已经使用过Roll了！");
+                    e.getWhoClicked().sendMessage(ChatColor.DARK_RED + "队伍已经刷新过方块了！");
                 }
                 return;
             }
 
-            if (clickedItem.getItemMeta().displayName().equals(InventoryManager.WAYPOINTS)) {
+            if (clickedItem.getItemMeta().getDisplayName().equals(InventoryManager.WAYPOINTS)) {
                 if (GameManager.redTeamPlayer.contains((Player) e.getWhoClicked())) {
                     Objects.requireNonNull(Bukkit.getPlayer(e.getWhoClicked().getName())).openInventory(InventoryManager.redWayPoints);
                 } else if (GameManager.blueTeamPlayer.contains((Player) e.getWhoClicked())) {
@@ -281,7 +280,7 @@ public class playerClickEvent implements Listener {
                 return;
             }
 
-            if (clickedItem.getItemMeta().displayName().equals(InventoryManager.LOCATE)) {
+            if (clickedItem.getItemMeta().getDisplayName().equals(InventoryManager.LOCATE)) {
                 if (locateCommandPermission.contains((Player) e.getWhoClicked())) {
                     e.getWhoClicked().sendMessage(ChatColor.DARK_RED + "您还没有使用locate命令！无法再次购买！");
                     return;
@@ -291,7 +290,7 @@ public class playerClickEvent implements Listener {
                         ScoreboardManager.redTeamScore -= GameManager.locateCost;
                         ScoreboardManager.update();
                         locateCommandPermission.add((Player) e.getWhoClicked());
-                        ConsoleCommandHandler.send("tellraw @a \"\\u00a7a" + e.getWhoClicked().getName() + "购买了定位命令使用权限！\"");
+                        Bukkit.broadcastMessage(ChatColor.RED + ((Player) e.getWhoClicked()).getDisplayName() + "购买了locate命令使用权限");
                     } else {
                         e.getWhoClicked().sendMessage(ChatColor.DARK_RED + "积分不足！");
                     }
@@ -300,7 +299,8 @@ public class playerClickEvent implements Listener {
                         ScoreboardManager.blueTeamScore -= GameManager.locateCost;
                         ScoreboardManager.update();
                         locateCommandPermission.add((Player) e.getWhoClicked());
-                        ConsoleCommandHandler.send("tellraw @a \"\\u00a7a" + e.getWhoClicked().getName() + "购买了定位命令使用权限！\"");
+//                        ConsoleCommandHandler.send("tellraw @a \"\\u00a7a" + e.getWhoClicked().getName() + "购买了定位命令使用权限！\"");
+                        Bukkit.broadcastMessage(ChatColor.RED + ((Player) e.getWhoClicked()).getDisplayName() + "购买了locate命令使用权限");
                     } else {
                         e.getWhoClicked().sendMessage(ChatColor.DARK_RED + "积分不足！");
                     }

@@ -15,6 +15,11 @@ import org.bukkit.scoreboard.Team;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import static org.bukkit.scoreboard.Team.Option.COLLISION_RULE;
+import static org.bukkit.scoreboard.Team.Option.NAME_TAG_VISIBILITY;
+import static org.bukkit.scoreboard.Team.OptionStatus.FOR_OTHER_TEAMS;
+import static org.bukkit.scoreboard.Team.OptionStatus.FOR_OWN_TEAM;
+
 public class ScoreboardManager {
     public static Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
     public static Team red = scoreboard.registerNewTeam("red");
@@ -33,12 +38,21 @@ public class ScoreboardManager {
     public static void createScoreboard() {
         red.setDisplayName(ChatColor.RED + "红队");
         red.setColor(ChatColor.RED);
-        red.setPrefix(Color.format("&c[红队]"));
+        red.setPrefix(ChatColor.RED + "[红队]");
         red.addEntry("redPlayer");
         blue.setDisplayName(ChatColor.BLUE + "蓝队");
         blue.setColor(ChatColor.BLUE);
-        blue.setPrefix(Color.format("&1[蓝队]"));
+        blue.setPrefix(ChatColor.BLUE + "[蓝队]");
         blue.addEntry("bluePlayer");
+
+
+        blue.setAllowFriendlyFire(true);
+        blue.setOption(NAME_TAG_VISIBILITY, FOR_OTHER_TEAMS);
+        blue.setOption(COLLISION_RULE, FOR_OWN_TEAM);
+        red.setAllowFriendlyFire(true);
+        red.setOption(NAME_TAG_VISIBILITY, FOR_OTHER_TEAMS);
+        red.setOption(COLLISION_RULE, FOR_OWN_TEAM);
+
 
         sidebar = scoreboard.registerNewObjective("sidebar", "dummy");
         sidebar.setDisplaySlot(DisplaySlot.SIDEBAR);
@@ -106,12 +120,12 @@ public class ScoreboardManager {
     }
 
 
-
     // 设置玩家记分板
     public static void setPlayerScoreboard(Player p) {
         p.setScoreboard(scoreboard);
     }
-    public static void setGameOver(){
+
+    public static void setGameOver() {
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -122,10 +136,11 @@ public class ScoreboardManager {
                 setSlot(13, ChatColor.YELLOW + "本局游戏胜利队伍：" + GameManager.winnerTeamDisplayname);
                 cancel();
             }
-        }.runTaskLater(Main.getInstance(),20L);
+        }.runTaskLater(Main.getInstance(), 20L);
 
 
     }
+
     private static String setDifficultyDisplay(String block) {
         try {
             if (easyBlock.contains(block)) {
@@ -144,6 +159,7 @@ public class ScoreboardManager {
         }
         return null;
     }
+
     public static void update() {
 //        if (!GameManager.gameStatus) setPreScoreboard();
 //        else setGameScoreboard();
@@ -156,7 +172,7 @@ public class ScoreboardManager {
 //            setPreScoreboard();
 //        }
 
-        if (!GameManager.gameStatus){
+        if (!GameManager.gameStatus) {
             if (GameManager.gameOver) {
                 setGameOver();
             } else {
@@ -166,8 +182,9 @@ public class ScoreboardManager {
             setGameScoreboard();
         }
     }
+
     /**
-     * https://github.com/Andy-K-Sparklight/PluginDiaryCode/blob/master/RarityCommons/src/main/java/rarityeg/commons/ScoreHelper.java
+     * <a href="https://github.com/Andy-K-Sparklight/PluginDiaryCode/blob/master/RarityCommons/src/main/java/rarityeg/commons/ScoreHelper.java">...</a>
      * Help build up a scoreboard.
      * Considering RarityCommons isn't designed for Paper only,
      * we won't make migrations before Bukkit and Spigot support Kyori Powered Adventure.
